@@ -1,0 +1,13 @@
+
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
+export HISTCONTROL=ignoreboth
+export HISTIGNORE='&:clear:ls:cd:[bf]g:exit:[ t\]*'
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='vim'
+fi
+
+export LANG=en_US.UTF-8
+export PATH="/home/SiddharthVipul/anaconda3/bin:$PATH"
