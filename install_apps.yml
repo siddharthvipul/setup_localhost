@@ -1,0 +1,94 @@
+- hosts: localhost
+  become: yes
+
+  tasks:
+
+    - name: get atom rpm
+      get_url:
+        url: https://atom.io/download/rpm
+        dest: /tmp
+
+    - name: install editors
+      dnf:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - vim
+        - https://atom.io/download/rpm
+
+    - name: install design tools
+      dnf:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - darktable
+        - gimp
+
+    - name: install productivity packages
+      dnf:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - tmux
+        - terminator
+        - ipython
+        - zsh
+
+    - name: install oh-my-zsh
+      command: sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+
+    - name: install security and monitoring packages packages
+      dnf:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - git
+        - gitflow
+        - hub
+        - python-sh
+        - python-virtualenvwrapper
+        - python-pip
+        - gcc
+        - gcc-c++
+          
+    - name: clone config data
+      git:
+        repo:
+        dest: /tmp/rcfiles
+
+    - name: copy files to ~
+      copy:
+        src: "{{ item }}"
+        dest: $HOME
+      with_items:
+        - /tmp/rcfiles/vim/.vim
+        - /tmp/rcfiles/vim/.vimrc
+        - /tmp/rcfiles/bash_zsh/.shells
+    
+    - name: install gnome packages
+      dnf:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - xclip
+        - xsel
+        - gvim
+        - gnome-tweak-tool
+
+    - name: install extra packages
+      dnf:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - pulseaudio
+        - virt-manager
+        - vlc
+        - 
+
+    - name: remove useless packages
+      dnf:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - shotwell
+        - rhythmbox
